@@ -1,0 +1,160 @@
+Create an ultra-premium futuristic SaaS landing page for a habit tracker app called “HabitForge” while PRESERVING THE EXACT SAME CORE DESIGN, LAYOUT, LOGO POSITIONING, COLOR PALETTE, AND OVERALL VISUAL IDENTITY from the reference image.
+
+DO NOT redesign the structure.
+DO NOT change the logo.
+DO NOT change the overall composition.
+DO NOT change the purple neon aesthetic.
+DO NOT replace the central glowing ring.
+DO NOT make it minimal or flat.
+The final output must feel like an advanced billion-dollar cyberpunk SaaS product while still looking EXACTLY like this original design.
+
+The page should look cinematic, immersive, futuristic, polished, animated, and highly premium.
+
+========================
+CORE LAYOUT (KEEP EXACT)
+========================
+
+Maintain:
+- centered glowing logo
+- circular purple neon energy ring
+- HabitForge title below logo
+- tagline below title
+- glowing login button at bottom
+- dark black/purple background
+- centered vertical composition
+
+Do not move these sections.
+
+========================
+VISUAL STYLE
+========================
+
+Style:
+- futuristic cyberpunk SaaS
+- neon purple glow
+- holographic UI
+- smooth premium gradients
+- glowing particles
+- floating energy atmosphere
+- dark immersive background
+- soft volumetric lighting
+- realistic bloom effects
+- ultra-clean typography
+- Apple-level polish + gaming aesthetic
+
+The page should feel like:
+- futuristic productivity operating system
+- luxury AI startup
+- next-gen habit ecosystem
+- gamified self-improvement platform
+
+========================
+ADVANCED ANIMATIONS
+========================
+
+Add smooth modern animations throughout the page:
+
+1. Logo Entrance Animation
+- logo slowly floats upward on initial load
+- subtle scale-in effect
+- smooth fade-in
+- cinematic easing
+- feels magical and premium
+
+2. Neon Ring Animation
+- outer purple energy ring rotates slowly
+- glowing pulse expands softly
+- occasional energy sparks
+- realistic neon flicker
+- orbiting particles around ring
+
+3. Background Effects
+- tiny floating purple particles
+- moving star dust
+- subtle fog/smoke glow
+- animated grid or light waves
+- depth/parallax movement
+
+4. Button Animation
+- glowing hover effect
+- smooth pulse
+- animated arrow movement
+- hover lift effect
+- glossy neon reflections
+
+5. Text Animation
+- title fades in elegantly
+- slight glow shimmer across “HabitForge”
+- smooth cinematic appearance
+
+========================
+ADVANCED SAAS DETAILS
+========================
+
+Add subtle futuristic SaaS details WITHOUT changing layout:
+
+- holographic light reflections
+- glassmorphism glow layers
+- soft ambient shadows
+- premium glow transitions
+- dynamic lighting
+- subtle animated lens flares
+- floating energy circles beneath button
+- smooth particle trails
+
+Everything must feel:
+- responsive
+- modern
+- premium
+- immersive
+- luxurious
+- interactive
+
+========================
+COLOR PALETTE
+========================
+
+Primary:
+- neon purple
+- electric violet
+- deep black
+- dark indigo
+
+Accent:
+- pink-purple highlights
+- soft white glows
+
+Avoid:
+- bright blue
+- green
+- orange
+- flat colors
+
+========================
+TYPOGRAPHY
+========================
+
+Keep the exact “HabitForge” typography style but enhance it with:
+- stronger glow
+- polished gradients
+- sharper futuristic rendering
+- animated shimmer effect
+
+Tagline should remain elegant and subtle.
+
+========================
+FINAL FEEL
+========================
+
+The final landing page should feel like:
+- a futuristic AI-powered habit tracking ecosystem
+- a premium SaaS startup worth billions
+- cinematic and emotionally powerful
+- addictive and immersive
+- futuristic but clean
+- gamified self-improvement platform
+
+Think:
+“Duolingo + Notion + Cyberpunk + Apple + futuristic gaming UI”
+
+The final result must still clearly look like the ORIGINAL uploaded design — just massively upgraded to elite SaaS quality with advanced animations, polish, lighting, and immersive futuristic effects.

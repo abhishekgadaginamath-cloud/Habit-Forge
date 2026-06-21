@@ -1,0 +1,378 @@
+Replace the existing demo login system in HabitForge with Clerk authentication. 
+Remove ALL hardcoded demo credentials. Implement full auth with: Email, Google, 
+Apple, and Phone number sign-in. Match the existing dark RPG theme.
+
+---
+
+## STEP 1 — Install dependencies
+
+In the client/ directory run:
+npm install @clerk/clerk-react
+
+In the server/ directory run:
+npm install @clerk/clerk-sdk-node svix
+
+---
+
+## STEP 2 — Environment variables
+
+Add these to your Replit Secrets (do NOT put in .env file):
+
+Frontend (client/.env or Replit Secrets):
+  VITE_CLERK_PUBLISHABLE_KEY=pk_test_YOUR_KEY_HERE
+
+Backend (server/.env or Replit Secrets):
+  CLERK_SECRET_KEY=sk_test_YOUR_KEY_HERE
+  CLERK_WEBHOOK_SECRET=whsec_YOUR_WEBHOOK_SECRET_HERE
+
+Get these from: https://dashboard.clerk.com → your app → API Keys
+
+---
+
+## STEP 3 — Clerk Dashboard configuration
+
+Before touching code, configure these in the Clerk dashboard:
+1. Go to User & Authentication → Social Connections
+   → Enable: Google, Apple
+2. Go to User & Authentication → Phone, SMS, Username  
+   → Enable: Phone number
+3. Go to User & Authentication → Email, Phone, Username
+   → Enable: Email address (magic link + OTP)
+4. Go to Webhooks → Add endpoint:
+   URL: https://YOUR-REPLIT-URL.replit.app/api/webhooks/clerk
+   Events: user.created, user.updated, user.deleted
+
+---
+
+## STEP 4 — Wrap the React app with ClerkProvider
+
+Edit client/src/main.jsx:
+
+import { ClerkProvider } from '@clerk/clerk-react'
+import { dark } from '@clerk/themes'
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
+createRoot(document.getElementById('root')).render(
+  <ClerkProvider
+    publishableKey={PUBLISHABLE_KEY}
+    appearance={{
+      baseTheme: dark,
+      variables: {
+        colorPrimary: '#7f77dd',
+        colorBackground: '#13121f',
+        colorInputBackground: '#0f0e17',
+        colorInputText: '#e8e6f0',
+        colorText: '#e8e6f0',
+        colorTextSecondary: '#8884a8',
+        colorNeutral: '#2a2840',
+        borderRadius: '8px',
+        fontFamily: 'Inter, system-ui, sans-serif',
+      },
+      elements: {
+        card: {
+          background: '#13121f',
+          border: '0.5px solid #2a2840',
+          borderRadius: '16px',
+          boxShadow: 'none',
+        },
+        headerTitle: { color: '#e8e6f0', fontSize: '20px' },
+        headerSubtitle: { color: '#5a5875' },
+        socialButtonsBlockButton: {
+          background: '#1a1830',
+          border: '0.5px solid #2a2840',
+          color: '#c8c4e8',
+          '&:hover': { borderColor: '#534ab7' },
+        },
+        dividerLine: { background: '#2a2840' },
+        dividerText: { color: '#4a4760' },
+        formFieldInput: {
+          background: '#0f0e17',
+          border: '0.5px solid #2a2840',
+          color: '#e8e6f0',
+          '&:focus': { borderColor: '#534ab7' },
+        },
+        formButtonPrimary: {
+          background: '#7f77dd',
+          '&:hover': { background: '#6b64c4' },
+        },
+        footerActionLink: { color: '#7f77dd' },
+        logoBox: { display: 'none' },
+      },
+    }}
+  >
+    <App />
+  </ClerkProvider>
+)
+
+---
+
+## STEP 5 — Replace the sign-in page
+
+Delete the existing Login.jsx / SignIn.jsx entirely.
+
+Create client/src/pages/SignInPage.jsx:
+
+import { SignIn } from '@clerk/clerk-react'
+
+export default function SignInPage() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: '#0f0e17',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '32px 16px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+        <div style={{
+          width: 36, height: 36, background: '#7f77dd',
+          borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>⚔️</div>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 500, color: '#e8e6f0' }}>HabitForge</div>
+          <div style={{ fontSize: 10, color: '#7f77dd', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Begin your quest
+          </div>
+        </div>
+      </div>
+      <SignIn
+        routing="path"
+        path="/sign-in"
+        signUpUrl="/sign-up"
+        afterSignInUrl="/dashboard"
+      />
+    </div>
+  )
+}
+
+Create client/src/pages/SignUpPage.jsx:
+
+import { SignUp } from '@clerk/clerk-react'
+
+export default function SignUpPage() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      background: '#0f0e17',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '32px 16px',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+        <div style={{
+          width: 36, height: 36, background: '#7f77dd',
+          borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>⚔️</div>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 500, color: '#e8e6f0' }}>HabitForge</div>
+          <div style={{ fontSize: 10, color: '#7f77dd', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Create your character
+          </div>
+        </div>
+      </div>
+      <SignUp
+        routing="path"
+        path="/sign-up"
+        signInUrl="/sign-in"
+        afterSignUpUrl="/dashboard"
+      />
+    </div>
+  )
+}
+
+---
+
+## STEP 6 — Protect routes in App.jsx
+
+Replace any manual auth checks with Clerk's components:
+
+import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react'
+
+function ProtectedRoute({ children }) {
+  return (
+    <>
+      <SignedIn>{children}</SignedIn>
+      <SignedOut><RedirectToSignIn /></SignedOut>
+    </>
+  )
+}
+
+In your router, wrap all dashboard routes:
+<Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+<Route path="/profile"   element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+<Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+<Route path="/sign-in/*" element={<SignInPage />} />
+<Route path="/sign-up/*" element={<SignUpPage />} />
+
+---
+
+## STEP 7 — Update Topbar to use Clerk user data
+
+Replace any manual user state in Topbar.jsx with:
+
+import { useUser, UserButton } from '@clerk/clerk-react'
+
+const { user } = useUser()
+
+Replace the hardcoded avatar div with:
+<UserButton
+  afterSignOutUrl="/sign-in"
+  appearance={{
+    baseTheme: dark,
+    elements: {
+      avatarBox: { width: 32, height: 32, border: '1.5px solid #7f77dd' },
+    },
+  }}
+/>
+
+Replace hardcoded username with:
+{user?.firstName || user?.username || 'Adventurer'}
+
+---
+
+## STEP 8 — Protect the Express backend with Clerk
+
+Edit server/middleware/auth.js — replace the old JWT middleware entirely:
+
+import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node'
+
+export const requireAuth = ClerkExpressRequireAuth()
+
+The Clerk middleware automatically validates the session token sent from 
+the frontend. Access the user ID in your routes via:
+  req.auth.userId
+
+Update all protected route handlers that used req.user._id to use 
+req.auth.userId instead. Example:
+  const habits = await Habit.find({ clerkUserId: req.auth.userId })
+
+---
+
+## STEP 9 — Sync Clerk users to MongoDB via webhook
+
+Create server/routes/webhooks.js:
+
+import { Webhook } from 'svix'
+import User from '../models/User.js'
+
+export default function webhookRoutes(app) {
+  app.post('/api/webhooks/clerk',
+    express.raw({ type: 'application/json' }),
+    async (req, res) => {
+      const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
+      let evt
+      try {
+        evt = wh.verify(req.body, {
+          'svix-id': req.headers['svix-id'],
+          'svix-timestamp': req.headers['svix-timestamp'],
+          'svix-signature': req.headers['svix-signature'],
+        })
+      } catch {
+        return res.status(400).json({ error: 'Invalid webhook' })
+      }
+
+      if (evt.type === 'user.created') {
+        await User.create({
+          clerkUserId: evt.data.id,
+          email: evt.data.email_addresses[0]?.email_address,
+          username: evt.data.username || evt.data.first_name || 'Adventurer',
+          xp: 0,
+          level: 1,
+          badges: [],
+          isPremium: false,
+        })
+      }
+
+      if (evt.type === 'user.deleted') {
+        await User.deleteOne({ clerkUserId: evt.data.id })
+      }
+
+      res.json({ received: true })
+    }
+  )
+}
+
+Register it in server/index.js:
+import webhookRoutes from './routes/webhooks.js'
+webhookRoutes(app)
+
+---
+
+## STEP 10 — Update MongoDB User model
+
+In server/models/User.js, replace the passwordHash field with clerkUserId:
+
+clerkUserId: { type: String, required: true, unique: true },
+
+Remove: passwordHash, any JWT-related fields
+Keep: xp, level, badges, isPremium, username, email, avatar, createdAt
+
+---
+
+## STEP 11 — Remove all old auth code
+
+Delete or empty these files (no longer needed):
+- server/utils/generateToken.js (or similar)
+- server/middleware/protect.js (replaced by Clerk middleware)
+- client/src/context/AuthContext.jsx (replaced by ClerkProvider)
+- client/src/pages/Login.jsx
+- Any bcrypt password hashing logic in server/routes/auth.js
+
+Remove these npm packages:
+  client: remove axios auth interceptors that set Authorization headers manually
+  server: npm uninstall bcryptjs jsonwebtoken
+
+The frontend sends the Clerk session token automatically via the 
+@clerk/clerk-react SDK — no manual token management needed.
+
+---
+
+## STEP 12 — Send Clerk token from frontend API calls
+
+In client/src/utils/api.js (or wherever Axios is configured):
+
+import { useAuth } from '@clerk/clerk-react'
+
+Create a custom hook for authenticated requests:
+export function useApi() {
+  const { getToken } = useAuth()
+
+  const authFetch = async (url, options = {}) => {
+    const token = await getToken()
+    return fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        ...options.headers,
+      },
+    })
+  }
+
+  return { authFetch }
+}
+
+Use this hook in all components that call the backend instead of plain fetch/axios.
+
+---
+
+## DO NOT change
+- Any gamification logic in server/utils/gamification.js
+- Habit, Log MongoDB schemas (only User schema changes)
+- All existing API route logic — only swap req.user._id for req.auth.userId
+- The dark RPG theme and component styles
+
+---
+
+## Final checklist before testing
+1. Clerk publishable key is in Replit Secrets as VITE_CLERK_PUBLISHABLE_KEY
+2. Clerk secret key is in Replit Secrets as CLERK_SECRET_KEY  
+3. Google and Apple OAuth enabled in Clerk dashboard
+4. Phone number auth enabled in Clerk dashboard
+5. Webhook endpoint registered pointing to your Replit URL
+6. Old bcrypt/JWT packages removed from server

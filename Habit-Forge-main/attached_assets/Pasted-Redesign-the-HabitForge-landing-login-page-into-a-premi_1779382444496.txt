@@ -1,0 +1,109 @@
+Redesign the HabitForge landing/login page into a premium purple neon animated splash screen.
+
+Use the uploaded Habit Tracker logo as the center logo. Do not use the sword logo.
+
+Requirements:
+
+1. Landing page layout
+- Full screen dark neon background.
+- Background color: #070711 or #0f0e17.
+- Center everything vertically and horizontally.
+- No navbar.
+- No extra text sections.
+- Only show:
+  1) main logo in circular glass/neon frame
+  2) slow spinning neon ring/spinner around logo
+  3) app name: HabitForge
+  4) small powerful tagline
+  5) login glass card/button
+
+2. Logo animation
+- When page loads, logo should gently float upward a little.
+- Add smooth floating animation continuously.
+- Put logo inside a circular glass badge.
+- Add purple glow behind it.
+- Add shadow and neon border.
+
+3. Spinner animation
+- Add a thin purple neon circular spinner around the logo.
+- Spinner should rotate slowly, not fast.
+- Use CSS animation:
+  animation: spin 10s linear infinite;
+- Spinner should look premium, with gradient purple/pink glow.
+
+4. App name
+- Text: HabitForge
+- Use attractive TypeScript/tech style font.
+- Use gradient text:
+  purple → pink → light violet
+- Add text glow.
+- Large but clean.
+- Add slight fade-up animation after logo.
+
+5. Tagline
+Use this tagline:
+“Consistency Today. Transformation Tomorrow.”
+- Small uppercase text.
+- Letter spacing.
+- Purple muted neon color.
+- Fade-up animation.
+
+6. Login glass card
+- Below tagline, create a glassmorphism login card/button.
+- Text: LOGIN →
+- Button/card should glow purple.
+- On hover: scale slightly, glow brighter.
+- It must directly navigate to the existing sign-in page.
+- If project uses React Router, use:
+  onClick={() => navigate("/sign-in")}
+  OR Link to="/sign-in"
+- Do not create duplicate auth logic.
+- Keep existing Clerk/sign-in page connected.
+
+7. Connect login page to sign-up page
+- On the sign-in page, make sure there is a visible link:
+  “Don’t have an account? Sign up”
+- That link must route to /sign-up.
+- On sign-up page, add link:
+  “Already have an account? Sign in”
+- That link must route to /sign-in.
+- Keep Clerk authentication if already installed.
+
+8. Background animations
+- Add small floating purple neon particles throughout the screen.
+- Add 8–12 small glowing orbs/stars.
+- They should move slowly using CSS keyframes.
+- Add subtle radial gradient glow behind the logo.
+- Add no distracting elements.
+
+9. UI style
+Use this color theme:
+--bg-main: #070711;
+--bg-card: rgba(20, 18, 38, 0.55);
+--purple: #8b5cf6;
+--purple-light: #c4b5fd;
+--pink: #ec4899;
+--text-main: #f4f1ff;
+--text-muted: #a7a3c8;
+--border-glow: rgba(139, 92, 246, 0.45);
+
+10. File structure
+Create/update these files if needed:
+- client/src/pages/LandingPage.jsx
+- client/src/pages/SignInPage.jsx
+- client/src/pages/SignUpPage.jsx
+- client/src/components/NeonLogo.jsx
+- client/src/styles/landing.css
+
+11. Important
+- Do not modify backend.
+- Do not remove Clerk/auth setup.
+- Do not add dashboard content on landing page.
+- Do not add navbar.
+- Do not add feature cards.
+- Landing page must look like a premium app splash screen.
+- Make it fully responsive for mobile and desktop.
+- Use only CSS animations unless Framer Motion is already installed.
+
+Final result:
+When the website opens, user should see a stunning purple neon splash landing page. Logo floats slightly upward, neon ring slowly spins, app name appears in gradient, tagline appears below, and a glowing glass LOGIN button opens the sign-in page. The sign-in page must allow navigation to sign-up page.

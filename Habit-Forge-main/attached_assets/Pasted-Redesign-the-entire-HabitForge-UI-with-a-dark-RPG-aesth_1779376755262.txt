@@ -1,0 +1,163 @@
+Redesign the entire HabitForge UI with a dark RPG aesthetic. Do not change any backend logic or API routes — only touch frontend files (CSS, components, layout).
+
+---
+
+## COLOR TOKENS (add to index.css as :root variables)
+
+:root {
+  --bg-base: #0f0e17;
+  --bg-surface: #13121f;
+  --bg-elevated: #1a1830;
+  --bg-hover: #1e1c30;
+
+  --border: #2a2840;
+  --border-accent: #534ab7;
+
+  --text-primary: #e8e6f0;
+  --text-secondary: #8884a8;
+  --text-muted: #5a5875;
+
+  --purple-dark: #26215c;
+  --purple-mid: #534ab7;
+  --purple-light: #7f77dd;
+  --purple-pale: #afa9ec;
+
+  --amber: #ef9f27;
+  --amber-dark: #412402;
+  --teal: #5dcaa5;
+  --teal-dark: #04342c;
+  --coral-dark: #4a1b0c;
+  --pink: #d4537e;
+}
+
+---
+
+## GLOBAL STYLES
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+}
+
+* { box-sizing: border-box; }
+
+---
+
+## LAYOUT — App shell (App.jsx or Layout.jsx)
+
+Use a flex row layout: fixed sidebar (220px wide) + main content area.
+
+```jsx
+<div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-base)' }}>
+  <Sidebar />
+  <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+    <Topbar />
+    <main style={{ flex: 1, padding: '24px', overflowY: 'auto' }}>
+      {children}
+    </main>
+  </div>
+</div>
+```
+
+---
+
+## SIDEBAR COMPONENT
+
+Background: var(--bg-surface)
+Border-right: 0.5px solid var(--border)
+Width: 220px, fixed height 100vh
+
+Sections:
+1. Logo area at top — sword icon + "HabitForge" title + "Quest Log" subtitle in purple
+2. Nav links (Dashboard, My Habits, Analytics, Profile, Achievements, Guild, Settings)
+   - Default: color var(--text-muted), padding 9px 12px, border-radius 8px
+   - Active state: background var(--bg-hover), color var(--purple-pale), left border 2px solid var(--purple-light)
+   - Use react-router NavLink with activeClassName
+3. Player card at bottom:
+   - User avatar (emoji circle, 26px)
+   - Username + "Warrior · Lv {level}"
+   - XP progress bar: thin (6px), background var(--border), fill var(--purple-light)
+   - "X XP to level N" label in purple
+
+---
+
+## TOPBAR COMPONENT
+
+Background: var(--bg-surface)
+Border-bottom: 0.5px solid var(--border)
+Padding: 14px 24px
+Flex row: left = page title + subtitle, right = streak pill + avatar
+
+Streak pill:
+  background: #2a1f0a
+  border: 0.5px solid #854f0b
+  color: var(--amber)
+  "🔥 {streak}-day streak"
+  border-radius: 20px, padding: 4px 12px, font-size: 12px
+
+---
+
+## DASHBOARD PAGE
+
+### Stat cards row (4 cards, CSS grid)
+grid-template-columns: repeat(4, 1fr), gap: 12px
+Each card: background var(--bg-surface), border 0.5px solid var(--border), border-radius 10px, padding 14px 16px
+Values: Level = purple, Streak = amber, XP = teal, Badges = pink
+The Level card gets border-color: var(--border-accent)
+
+### Habit cards (today's quests section)
+Each habit card:
+  background: var(--bg-surface)
+  border: 0.5px solid var(--border)
+  border-radius: 10px
+  padding: 14px 16px
+  display: flex, align-items: center, gap: 14px
+
+Left icon box (38×38px, border-radius 9px):
+  - Assign background color per habit color tag: purple-dark, teal-dark, amber-dark, coral-dark
+
+Middle: habit name (14px, --text-primary) + streak tag (amber, 11px) + frequency (muted)
+
+Right: XP chip (purple pill) + complete button (circle, 28px)
+  - Incomplete: border 1.5px solid var(--border), color muted
+  - Complete: background var(--teal-dark), border-color teal, checkmark in teal
+
+Completed card state:
+  border-color: #0f6e56
+  background: #0a1a15
+
+Animate completion with Framer Motion:
+  whileTap={{ scale: 0.9 }}
+  On complete → animate card border to teal, icon pops (scale 1.3 → 1)
+
+### Bottom row (2 panels, CSS grid 1fr 1fr)
+
+Left panel — Weekly completion bar chart (Recharts)
+  Background bars: var(--purple-dark)
+  Today's bar: var(--purple-light)
+  No axis lines, no grid. Just bars and day labels below.
+
+Right panel — Achievements badge grid (4 columns)
+  Earned: background var(--bg-elevated), border var(--border-accent)
+  Locked: opacity 0.2 on icon, muted label
+
+---
+
+## TYPOGRAPHY RULES
+
+- Section labels: 11px, uppercase, letter-spacing 0.08em, color var(--text-muted)
+- Card titles: 14px, font-weight 500, var(--text-primary)
+- Meta/secondary text: 11px, var(--text-muted)
+- Stat values: 22px, font-weight 500, color per semantic meaning
+
+---
+
+## DO NOT change
+- Any file in /server
+- MongoDB models or routes
+- Gamification logic in /utils/gamification.js
+- Auth logic
+
+Only modify: /client/src components, pages, App.css or index.css, and the Layout component.

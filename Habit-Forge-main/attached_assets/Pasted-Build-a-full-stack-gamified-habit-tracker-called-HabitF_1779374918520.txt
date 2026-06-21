@@ -1,0 +1,234 @@
+Build a full-stack gamified habit tracker called **HabitForge** using React (frontend), Node.js + Express (backend), and MongoDB (database). This is a production-quality internship project — the code must be modular, clean, and well-structured.
+
+---
+
+## TECH STACK
+
+- Frontend: React.js, Recharts (for charts), Framer Motion (for animations), Axios
+- Backend: Node.js, Express.js, Mongoose (MongoDB ODM)
+- Database: MongoDB (use MongoDB Atlas free tier or local)
+- Utilities: date-fns (for all date math), bcryptjs + JWT (auth), dotenv
+
+---
+
+## PROJECT STRUCTURE
+
+```
+habitforge/
+├── client/                  (React app — create with Vite)
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   └── utils/
+├── server/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── utils/
+│   │   └── gamification.js  ← CRITICAL: XP + streak logic lives here
+│   └── seed/
+│       └── seedDemo.js      ← seeds demo user with 3 months of data
+└── README.md
+```
+
+---
+
+## PHASE 1 — DATABASE SCHEMA (MongoDB/Mongoose)
+
+### User model
+```
+{
+  username, email, passwordHash,
+  xp: Number (default 0),
+  level: Number (default 1),
+  badges: [{ name, unlockedAt }],
+  isPremium: Boolean (default false),
+  avatar: String (emoji or URL),
+  createdAt: Date
+}
+```
+
+### Habit model
+```
+{
+  userId: ObjectId (ref User),
+  name: String,
+  icon: String (emoji),
+  color: String (hex),
+  frequency: enum ['daily', 'weekly'],
+  streak: Number (default 0),
+  longestStreak: Number,
+  lastCompletedDate: Date,
+  createdAt: Date
+}
+```
+
+### Log model (separate collection — scalable time-series)
+```
+{
+  habitId: ObjectId (ref Habit),
+  userId: ObjectId (ref User),
+  completedAt: Date,
+  xpAwarded: Number
+}
+```
+
+---
+
+## PHASE 2 — GAMIFICATION LOGIC (server/utils/gamification.js)
+
+Implement and export these pure functions:
+
+### Streak calculation
+```js
+// Call this every time a habit is marked complete
+function calculateStreak(lastCompletedDate, currentStreak) {
+  const today = startOfDay(new Date());
+  const last = lastCompletedDate ? startOfDay(new Date(lastCompletedDate)) : null;
+
+  if (!last) return 1; // first time
+  const diffDays = differenceInCalendarDays(today, last);
+
+  if (diffDays === 1) return currentStreak + 1; // consecutive day
+  if (diffDays === 0) return currentStreak;     // already done today
+  return 1; // streak broken — reset to 1 (they just completed it)
+}
+```
+
+### XP award
+```js
+function calculateXP(streak) {
+  // Base 10 XP + 2 bonus per streak day (capped at 50 bonus)
+  return 10 + Math.min(streak * 2, 50);
+}
+```
+
+### Level from XP
+```js
+function calculateLevel(totalXP) {
+  return Math.floor(Math.sqrt(totalXP / 50)) + 1;
+}
+```
+
+### Badge checker (call after every habit completion)
+```js
+function checkBadges(user, streak, totalHabitsCompleted) {
+  const newBadges = [];
+  const existing = user.badges.map(b => b.name);
+
+  const rules = [
+    { name: 'First Step',      condition: totalHabitsCompleted >= 1 },
+    { name: 'Consistency King', condition: streak >= 7 },
+    { name: 'Habit Machine',   condition: streak >= 30 },
+    { name: 'Century Club',    condition: totalHabitsCompleted >= 100 },
+    { name: 'Level 5 Legend',  condition: calculateLevel(user.xp) >= 5 },
+  ];
+
+  for (const rule of rules) {
+    if (rule.condition && !existing.includes(rule.name)) {
+      newBadges.push({ name: rule.name, unlockedAt: new Date() });
+    }
+  }
+  return newBadges;
+}
+```
+
+---
+
+## PHASE 3 — BACKEND API ROUTES
+
+### Auth routes (/api/auth)
+- POST /register — hash password with bcrypt, return JWT
+- POST /login — verify password, return JWT
+- Middleware: protect routes with JWT verification
+
+### Habit routes (/api/habits) — all protected
+- GET / — get all habits for logged-in user
+- POST / — create habit (name, icon, color, frequency)
+- PUT /:id/complete — mark habit complete for today:
+  1. Call calculateStreak()
+  2. Call calculateXP(streak)
+  3. Save a Log document
+  4. Update habit (streak, lastCompletedDate)
+  5. Update user (xp, level via calculateLevel, add new badges)
+  6. Return updated habit + any newly unlocked badges
+- DELETE /:id — delete habit
+
+### User/profile routes (/api/user)
+- GET /profile — return user with xp, level, badges
+- GET /stats — return: total habits, total logs, current streaks
+
+### Analytics routes (/api/analytics) — premium gated
+- GET /heatmap — return log counts grouped by date (last 365 days)
+- GET /consistency — return daily completion % for last 30 days
+
+---
+
+## PHASE 4 — FRONTEND PAGES & COMPONENTS
+
+### Pages
+1. `/login` and `/register` — clean auth forms
+2. `/dashboard` — main page: today's habits checklist + XP bar
+3. `/profile` — user avatar, level, XP progress bar, badge grid
+4. `/analytics` — charts (premium gate with blur overlay for free users)
+
+### Key components to build
+- `HabitCard` — shows habit name, icon, streak badge, complete button. Animate completion with Framer Motion (scale pop + color flash)
+- `XPBar` — animated progress bar showing XP toward next level
+- `BadgeGrid` — grid of earned badges with locked placeholders
+- `HeatmapChart` — GitHub-style contribution graph using Recharts (365 squares, color intensity = completion count). **Premium only**
+- `ConsistencyChart` — Recharts LineChart for last 30 days completion rate
+- `PremiumGate` — wrapper component that blurs content and shows upgrade CTA for free users
+
+---
+
+## PHASE 5 — SEED DATA (server/seed/seedDemo.js)
+
+Create a seed script that:
+1. Creates a demo user: email `demo@habitforge.app`, password `demo123`, isPremium: true
+2. Creates 4 habits: "Drink Water" 💧, "Read 30 mins" 📚, "Exercise" 🏃, "Meditate" 🧘
+3. Generates 90 days of realistic log history (not 100% — simulate ~75-85% completion rate with random gaps)
+4. Calculates and saves correct streaks, XP, level, and badges based on this history
+5. Run with: `node server/seed/seedDemo.js`
+
+---
+
+## PREMIUM GATING
+
+Add `isPremium` check middleware for:
+- GET /api/analytics/heatmap
+- GET /api/analytics/consistency
+- Frontend: wrap `HeatmapChart` and `ConsistencyChart` in ``
+
+---
+
+## TIMEZONE HANDLING
+
+All date comparisons use `date-fns/startOfDay` to normalize to midnight local time. Store all dates as UTC in MongoDB. The `calculateStreak` function always compares `startOfDay(new Date())` vs `startOfDay(lastCompletedDate)` so timezone drift doesn't cause false streak resets.
+
+---
+
+## README must include
+
+1. Setup instructions (npm install, env vars, seed command, start command)
+2. A section titled "Streak Calculation Algorithm" explaining:
+   - How streaks are calculated (diff in calendar days)
+   - How timezone is handled (startOfDay normalization)
+   - How missed days are handled (reset to 1 on next completion)
+3. API route documentation (brief table of endpoints)
+
+---
+
+## ENV VARIABLES NEEDED (.env)
+
+```
+MONGODB_URI=your_mongo_connection_string
+JWT_SECRET=your_jwt_secret_key
+PORT=5000
+```
+
+---
+
+Start by scaffolding the full project structure, then implement in this order: DB models → gamification utils → API routes → seed script → React frontend. Make sure the app runs end-to-end with the demo user before polishing the UI.
+    

@@ -1,0 +1,523 @@
+Create a world-class futuristic SaaS web application called “HabitForge” — an AI-powered habit tracking and self-improvement platform with a premium cyberpunk aesthetic, immersive animations, advanced gamification, and modern SaaS architecture.
+
+IMPORTANT:
+Keep the EXISTING LANDING PAGE DESIGN EXACTLY THE SAME as the uploaded reference.
+Do NOT redesign the current aesthetic.
+Do NOT change the logo placement.
+Do NOT remove the glowing purple neon theme.
+Do NOT simplify the UI.
+Instead, UPGRADE everything into an elite premium SaaS experience while preserving the exact visual identity.
+
+==================================================
+CORE BRAND IDENTITY
+==================================================
+
+Brand Name:
+HabitForge
+
+Brand Concept:
+A futuristic self-improvement operating system where users “forge” discipline, focus, health, and success through habits, routines, streaks, AI guidance, and gamification.
+
+Mood:
+- futuristic
+- immersive
+- premium
+- cyberpunk
+- emotional
+- addictive
+- elegant
+- AI-powered
+- neon sci-fi
+- cinematic
+
+Visual Identity:
+- glowing neon purple
+- dark black backgrounds
+- holographic UI
+- smooth gradients
+- animated particles
+- glassmorphism
+- ambient lighting
+- floating energy effects
+- realistic bloom/glow
+
+The app should feel like:
+“Apple + Duolingo + Notion + Cyberpunk 2077 + futuristic gaming UI”
+
+==================================================
+LANDING PAGE (KEEP EXACT STRUCTURE)
+==================================================
+
+Maintain the exact current layout:
+- centered glowing logo
+- purple neon energy ring
+- HabitForge title
+- tagline
+- glowing login button
+- centered composition
+
+DO NOT CHANGE THE STRUCTURE.
+
+UPGRADE IT USING:
+- cinematic entrance animations
+- floating particles
+- orbiting energy effects
+- smooth neon pulse
+- animated glow trails
+- holographic lighting
+- subtle smoke/fog effects
+- realistic depth
+- parallax movement
+- floating ambient light
+
+Animations:
+- logo floats upward on load
+- ring rotates slowly
+- button pulses softly
+- title shimmer animation
+- glow intensity transitions
+- smooth motion everywhere
+
+==================================================
+AUTHENTICATION SYSTEM
+==================================================
+
+Create a premium futuristic authentication flow.
+
+Features:
+- Google Sign In
+- Email login/signup
+- OTP verification
+- Forgot password
+- Guest mode
+- Session persistence
+- Biometric/mobile support ready
+
+UI:
+- glowing input fields
+- animated focus states
+- glassmorphism cards
+- neon borders
+- smooth transitions
+
+==================================================
+ONBOARDING EXPERIENCE
+==================================================
+
+Create an immersive onboarding system after signup.
+
+Ask users:
+- goals
+- wake-up time
+- sleep schedule
+- focus areas
+- fitness goals
+- study goals
+- stress level
+- productivity style
+
+Then AI generates:
+- personalized habits
+- routines
+- beginner plans
+- recommended challenges
+
+UI:
+- animated cards
+- smooth step transitions
+- progress indicator
+- futuristic sliders
+- glowing selections
+
+==================================================
+MAIN DASHBOARD
+==================================================
+
+Create an elite futuristic dashboard.
+
+Top Section:
+- greeting
+- profile avatar
+- current streak
+- XP bar
+- user level
+- motivational AI quote
+
+Main Habit Section:
+- today’s habits
+- completion buttons
+- progress rings
+- animated check effects
+- streak flames
+
+Stats Section:
+- daily score
+- consistency %
+- weekly progress
+- productivity level
+
+Bottom Navigation:
+- Dashboard
+- Habits
+- Calendar
+- AI Coach
+- Profile
+
+Animations:
+- smooth hover effects
+- glowing interactions
+- magnetic buttons
+- subtle floating cards
+
+==================================================
+HABIT TRACKING SYSTEM
+==================================================
+
+Core Features:
+- create habits
+- recurring habits
+- custom schedules
+- reminders
+- difficulty levels
+- categories
+- color customization
+- emoji/icon selection
+
+Habit Categories:
+- Fitness
+- Study
+- Productivity
+- Mental Health
+- Meditation
+- Coding
+- Health
+- Finance
+- Reading
+- Sleep
+
+Habit Completion:
+- tap to complete
+- swipe gestures
+- hold-to-complete animations
+- confetti effects
+- XP rewards
+
+==================================================
+GAMIFICATION SYSTEM
+==================================================
+
+Build a highly addictive gamification system.
+
+XP System:
+- earn XP per habit
+- streak bonuses
+- combo multipliers
+- challenge rewards
+
+Ranks:
+- Iron
+- Bronze
+- Silver
+- Gold
+- Diamond
+- Mythic
+
+Achievements:
+- 7-day streak
+- 30-day discipline
+- no sugar
+- coding master
+- early riser
+
+Skill Tree:
+Users level up:
+- Discipline
+- Focus
+- Knowledge
+- Strength
+- Confidence
+- Consistency
+
+Visuals:
+- glowing badges
+- animated unlocks
+- reward popups
+- RPG-inspired progression
+
+==================================================
+AI FEATURES
+==================================================
+
+Integrate advanced AI-powered productivity features.
+
+AI Habit Coach:
+- personalized advice
+- motivation
+- behavior analysis
+- productivity insights
+
+AI Routine Generator:
+Generate routines based on:
+- goals
+- schedule
+- lifestyle
+- energy level
+
+AI Analytics:
+- detect failure patterns
+- suggest improvements
+- predict consistency
+- smart optimization
+
+AI Motivation:
+- daily quotes
+- reminders
+- encouragement
+- smart notifications
+
+==================================================
+ANALYTICS & INSIGHTS
+==================================================
+
+Create premium analytics pages.
+
+Include:
+- streak graphs
+- weekly completion charts
+- monthly heatmaps
+- productivity trends
+- consistency score
+- mood correlation
+
+Charts:
+- animated line charts
+- glowing pie charts
+- interactive graphs
+- GitHub-style heatmaps
+
+==================================================
+CALENDAR SYSTEM
+==================================================
+
+Features:
+- monthly calendar
+- streak tracking
+- completion heatmaps
+- missed habit indicators
+- future planning
+
+Animations:
+- glowing hover states
+- smooth date transitions
+- interactive progress visuals
+
+==================================================
+FOCUS MODE
+==================================================
+
+Create a futuristic focus mode.
+
+Features:
+- Pomodoro timer
+- focus music
+- ambient sounds
+- distraction blocker
+- study tracking
+
+UI:
+- immersive dark mode
+- breathing glow animations
+- animated timers
+- deep focus atmosphere
+
+==================================================
+CHALLENGES SYSTEM
+==================================================
+
+Users can join:
+- 30-day challenges
+- no sugar challenge
+- coding streak challenge
+- glow-up challenge
+- dopamine detox
+
+Features:
+- leaderboards
+- countdowns
+- challenge rewards
+- community participation
+
+==================================================
+SOCIAL FEATURES
+==================================================
+
+Include:
+- friends system
+- streak sharing
+- achievement cards
+- motivational interactions
+- leaderboards
+
+Create beautiful social share cards for:
+- Instagram stories
+- progress screenshots
+- achievements
+
+==================================================
+PROFILE SYSTEM
+==================================================
+
+Profile Includes:
+- user avatar
+- level
+- badges
+- streak stats
+- achievements
+- completed habits
+- consistency score
+
+Add:
+- animated profile glow
+- aura effects
+- futuristic profile frames
+
+==================================================
+THEME ENGINE
+==================================================
+
+Allow multiple futuristic themes:
+- neon purple
+- cyberpunk blue
+- galaxy mode
+- dark gold
+- anime aesthetic
+- minimal white neon
+
+==================================================
+SETTINGS PAGE
+==================================================
+
+Include:
+- profile settings
+- notifications
+- reminders
+- theme customization
+- privacy
+- cloud sync
+- export/import data
+
+==================================================
+PREMIUM SAAS FEATURES
+==================================================
+
+Add:
+- subscription system
+- premium plans
+- AI premium features
+- unlimited habits
+- advanced analytics
+- custom themes
+- cloud backup
+
+Pricing Page:
+- futuristic pricing cards
+- glowing CTA buttons
+- animated comparisons
+
+==================================================
+ADMIN PANEL
+==================================================
+
+Create an admin dashboard.
+
+Admin Features:
+- user management
+- analytics
+- subscriptions
+- challenge management
+- notification broadcasts
+
+==================================================
+DESIGN SYSTEM
+==================================================
+
+Use:
+- glassmorphism
+- neon glows
+- smooth animations
+- modern spacing
+- responsive layouts
+- premium typography
+- holographic effects
+- cinematic transitions
+
+Everything should feel:
+- ultra-polished
+- fluid
+- immersive
+- responsive
+- premium
+- modern
+
+==================================================
+TECH STACK
+==================================================
+
+Frontend:
+- Next.js
+- React
+- Tailwind CSS
+- Framer Motion
+
+Backend:
+- Firebase or Supabase
+
+Database:
+- PostgreSQL / Firestore
+
+Authentication:
+- Firebase Auth / Clerk
+
+AI:
+- OpenAI API
+
+Charts:
+- Recharts
+
+Animations:
+- Framer Motion
+- GSAP
+
+==================================================
+ANIMATION QUALITY
+==================================================
+
+ALL interactions must feel premium.
+
+Include:
+- hover animations
+- page transitions
+- glow pulses
+- floating effects
+- animated gradients
+- smooth loading states
+- skeleton loaders
+- micro-interactions
+
+Avoid:
+- stiff UI
+- flat components
+- basic cards
+- boring layouts
+
+==================================================
+FINAL GOAL
+==================================================
+
+The final product should feel like:
+- a billion-dollar futuristic SaaS startup
+- a self-improvement operating system
+- an addictive gamified productivity ecosystem
+- a cinematic AI-powered habit platform
+
+The app must feel emotionally engaging, immersive, futuristic, smooth, responsive, and visually unforgettable while preserving the exact original HabitForge identity and neon cyberpunk aesthetic.

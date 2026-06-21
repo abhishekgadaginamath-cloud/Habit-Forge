@@ -1,0 +1,519 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: HabitForge API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: auth
+    description: Authentication
+  - name: habits
+    description: Habit management
+  - name: user
+    description: User profile and stats
+  - name: analytics
+    description: Analytics (premium)
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad request
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Unauthorized
+
+  /user/profile:
+    get:
+      operationId: getProfile
+      tags: [user]
+      summary: Get current user profile
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+    patch:
+      operationId: updateProfile
+      tags: [user]
+      summary: Update user profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+
+  /user/stats:
+    get:
+      operationId: getUserStats
+      tags: [user]
+      summary: Get user stats summary
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStats"
+
+  /habits:
+    get:
+      operationId: getHabits
+      tags: [habits]
+      summary: Get all habits for current user
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Habit"
+    post:
+      operationId: createHabit
+      tags: [habits]
+      summary: Create a new habit
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HabitInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Habit"
+
+  /habits/{id}:
+    patch:
+      operationId: updateHabit
+      tags: [habits]
+      summary: Update a habit
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HabitUpdate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Habit"
+    delete:
+      operationId: deleteHabit
+      tags: [habits]
+      summary: Delete a habit
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /habits/{id}/complete:
+    post:
+      operationId: completeHabit
+      tags: [habits]
+      summary: Mark habit as complete for today
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompleteHabitResult"
+
+  /habits/today:
+    get:
+      operationId: getTodayHabits
+      tags: [habits]
+      summary: Get today's habits with completion status
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HabitWithStatus"
+
+  /analytics/heatmap:
+    get:
+      operationId: getHeatmap
+      tags: [analytics]
+      summary: Get log heatmap for last 365 days (premium)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HeatmapEntry"
+        "403":
+          description: Premium required
+
+  /analytics/consistency:
+    get:
+      operationId: getConsistency
+      tags: [analytics]
+      summary: Get daily completion % for last 30 days (premium)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsistencyEntry"
+        "403":
+          description: Premium required
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    HealthStatus:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    RegisterInput:
+      type: object
+      required: [username, email, password]
+      properties:
+        username:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+        avatar:
+          type: string
+
+    LoginInput:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      required: [token, user]
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserProfile"
+
+    Badge:
+      type: object
+      required: [name, unlockedAt]
+      properties:
+        name:
+          type: string
+        unlockedAt:
+          type: string
+          format: date-time
+
+    UserProfile:
+      type: object
+      required: [id, username, email, xp, level, isPremium, avatar, badges]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        xp:
+          type: integer
+        level:
+          type: integer
+        isPremium:
+          type: boolean
+        avatar:
+          type: string
+        badges:
+          type: array
+          items:
+            $ref: "#/components/schemas/Badge"
+        createdAt:
+          type: string
+          format: date-time
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+        avatar:
+          type: string
+        isPremium:
+          type: boolean
+
+    UserStats:
+      type: object
+      required: [totalHabits, totalLogs, longestStreak, xp, level, xpToNextLevel, xpProgress]
+      properties:
+        totalHabits:
+          type: integer
+        totalLogs:
+          type: integer
+        longestStreak:
+          type: integer
+        xp:
+          type: integer
+        level:
+          type: integer
+        xpToNextLevel:
+          type: integer
+        xpProgress:
+          type: number
+
+    Habit:
+      type: object
+      required: [id, userId, name, icon, color, frequency, streak, longestStreak, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        name:
+          type: string
+        icon:
+          type: string
+        color:
+          type: string
+        frequency:
+          type: string
+          enum: [daily, weekly]
+        streak:
+          type: integer
+        longestStreak:
+          type: integer
+        lastCompletedDate:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    HabitInput:
+      type: object
+      required: [name, icon, color, frequency]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        icon:
+          type: string
+        color:
+          type: string
+        frequency:
+          type: string
+          enum: [daily, weekly]
+
+    HabitUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        icon:
+          type: string
+        color:
+          type: string
+        frequency:
+          type: string
+          enum: [daily, weekly]
+
+    HabitWithStatus:
+      type: object
+      required: [id, userId, name, icon, color, frequency, streak, longestStreak, completedToday, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        name:
+          type: string
+        icon:
+          type: string
+        color:
+          type: string
+        frequency:
+          type: string
+          enum: [daily, weekly]
+        streak:
+          type: integer
+        longestStreak:
+          type: integer
+        completedToday:
+          type: boolean
+        lastCompletedDate:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    CompleteHabitResult:
+      type: object
+      required: [habit, xpAwarded, newBadges, user]
+      properties:
+        habit:
+          $ref: "#/components/schemas/Habit"
+        xpAwarded:
+          type: integer
+        newBadges:
+          type: array
+          items:
+            $ref: "#/components/schemas/Badge"
+        user:
+          $ref: "#/components/schemas/UserProfile"
+
+    HeatmapEntry:
+      type: object
+      required: [date, count]
+      properties:
+        date:
+          type: string
+          format: date
+        count:
+          type: integer
+
+    ConsistencyEntry:
+      type: object
+      required: [date, completionRate, completed, total]
+      properties:
+        date:
+          type: string
+          format: date
+        completionRate:
+          type: number
+        completed:
+          type: integer
+        total:
+          type: integer

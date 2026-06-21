@@ -1,0 +1,87 @@
+Improve the HabitForge landing page UI/UX and add a proper professional logo.
+
+Current page already has dark RPG theme. Keep the same theme but make it more premium, modern, and game-like.
+
+Tasks:
+
+1. Replace the simple sword emoji/logo with a proper HabitForge logo.
+   Logo idea:
+   - Use an SVG logo, not emoji.
+   - Icon should combine: sword + flame + shield OR an anvil + flame.
+   - Color palette: purple, violet, silver, amber glow.
+   - Logo text: HabitForge.
+   - Make logo look like a gaming/RPG productivity brand.
+   - Add small glow effect behind logo.
+
+2. Improve navbar:
+   - Left: logo icon + HabitForge text.
+   - Right: Sign in button + Start free button.
+   - Add hover animations.
+   - Make navbar sticky/fixed at top.
+   - Add subtle glassmorphism background.
+   - Add thin purple border bottom.
+
+3. Improve hero section:
+   - Keep heading:
+     Build habits.
+     Level up.
+     Forge yourself.
+   - Make “Level up.” gradient purple.
+   - Add animated glow background circles.
+   - Add small floating RPG elements like XP badge, streak badge, quest card.
+   - Improve spacing and responsiveness.
+
+4. Add a visual hero card on the right side for desktop:
+   - Card title: Today’s Quests
+   - Example habits:
+     ⚡ Read 30 mins +20 XP
+     💧 Drink Water +10 XP
+     🏋️ Workout +30 XP
+   - Add XP progress bar.
+   - Add Level 7 badge.
+   - Use dark card design with purple border and glow.
+
+5. Improve CTA section:
+   - Primary button: Begin your quest →
+   - Secondary button: Sign in
+   - Add hover scale effect.
+   - Add soft shadow/glow on primary button.
+
+6. Add sections below hero:
+   - Features section with 3 cards:
+     XP & Levels
+     Streak Tracking
+     Badges & Achievements
+   - Each card should have an icon, title, and short description.
+   - Use same dark RPG style.
+
+7. Make the full page responsive:
+   - Desktop: hero text left, preview card right.
+   - Mobile: stacked layout.
+   - Navbar buttons should fit properly.
+
+8. Use clean CSS variables:
+   --bg-base: #0f0e17;
+   --bg-surface: #13121f;
+   --bg-elevated: #1a1830;
+   --purple: #7f77dd;
+   --purple-light: #afa9ec;
+   --amber: #ef9f27;
+   --text-primary: #e8e6f0;
+   --text-muted: #8884a8;
+   --border: #2a2840;
+
+9. Use Framer Motion if already installed.
+   If not installed, use CSS animations only.
+
+10. Do not change backend, auth logic, database, routes, or API.
+Only modify landing page components, navbar, logo component, and CSS.
+
+Create separate reusable components if needed:
+- Logo.jsx
+- Navbar.jsx
+- LandingPage.jsx
+- HeroPreviewCard.jsx
+- FeatureCard.jsx
+
+Final result should look like a polished SaaS landing page mixed with an RPG game dashboard.
